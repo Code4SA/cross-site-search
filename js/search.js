@@ -4,15 +4,20 @@
   var resultsContainer = $('#search-results');
 
   var startSpinner = function() {
+    $('#spinner').show();
   };
   var stopSpinner = function() {
+    $('#spinner').hide();
   };
 
   var error = function(jqXHR, textStatus, errorThrown) {
     console.log(textStatus, errorThrown, jqXHR);
   };
-  var success = function(query) {
+  var success = function(searchMoreURL, query) {
     return function(data) {
+      var count = "<div>" + data.length + " results </div>";
+      var searchMore = "<div><a href=\"" + searchMoreURL + "\">Search more</a></div>";
+      $(count + searchMore).appendTo(resultsContainer);
       for (i in data) {
         var rows = "";
         for (key in data[i]) {
@@ -32,15 +37,17 @@
   var search = function() {
     resultsContainer.empty();
     startSpinner();
+    var searchMoreURL = "https://data.code4sa.org/Government/Tender-Awards-2015-2016/kvv2-xrvr/data?q=" + searchbox.value;
     $.ajax("https://data.code4sa.org/resource/9vmn-5tnb.json?$q=" + searchbox.value, {
       error: error,
-      success: success(searchbox.value)
+      success: success(searchMoreURL, searchbox.value),
+      complete: complete
     })
     return false;
   };
 
 
   $(searchbutton).on('click', search);
-
+  stopSpinner();
 
 })();
