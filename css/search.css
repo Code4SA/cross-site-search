@@ -2,3 +2,11 @@ mark {
     background: orange;
     color: black;
 }
+
+.dataset-container {
+    border: 1px solid black;
+}
+
+.result {
+    border: 1px solid grey;
+}
