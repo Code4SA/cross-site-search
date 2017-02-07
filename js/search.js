@@ -31,13 +31,16 @@
         var searchMoreURL = htmlURL + '/data?q=' + query;
         var searchMore = "<div><a href=\"" + searchMoreURL + "\">Search more</a></div>";
         $(count + searchMore).appendTo(resultsContainer);
-        for (i in data) {
+        for (i in data.slice(0,3)) {
           var rows = "";
           for (key in data[i]) {
             rows += "<tr><td>" + key + "</td><td>" + data[i][key] + "</td></tr>";
           }
           $('<div class="result"><table class="table"><tr><th>field</th><th>value</th></tr>' + rows + '</table></div>').appendTo(resultsContainer);
         };
+        if (data.length > 3) {
+          $('<h3>...</h3>').appendTo(resultsContainer);
+        }
         resultsContainer.mark(stemmer(query), {
           separateWordSearch: true
         });
